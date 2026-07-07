@@ -1,6 +1,7 @@
 # Import python packages
 import streamlit as st
 from snowflake.snowpark.functions import col
+import requests
 
 st.title(":cup_with_straw: Customize Your Smoothie! :cup_with_straw:")
 
@@ -9,7 +10,7 @@ st.write("Choose the fruits you want in your custom Smoothie!")
 name_on_order = st.text_input("Name on Smoothie:")
 
 if name_on_order:
-    st.write("The name on your smoothie will be:", name_on_order)
+    st.write("The name on your Smoothie will be:", name_on_order)
 
 # Connect to Snowflake
 cnx = st.connection("snowflake")
@@ -45,3 +46,10 @@ if ingredients_list and name_on_order:
 
 elif ingredients_list and not name_on_order:
     st.warning("Please enter a name before submitting your smoothie order.")
+
+# New section to display smoothiefruit nutrition information
+smoothiefruit_response = requests.get(
+    "https://my.smoothiefroot.com/api/fruit/watermelon"
+)
+
+st.text(smoothiefruit_response)
