@@ -1,4 +1,3 @@
-# requirements.txt
 streamlit
 requests
-snowflake-connector-python
+snowflake-snowpark-python
