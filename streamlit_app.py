@@ -48,8 +48,14 @@ elif ingredients_list and not name_on_order:
     st.warning("Please enter a name before submitting your smoothie order.")
 
 # New section to display smoothiefruit nutrition information
-smoothiefruit_response = requests.get(
-    "https://my.smoothiefroot.com/api/fruit/watermelon"
-)
+try:
+    smoothiefruit_response = requests.get(
+        "https://my.smoothiefroot.com/api/fruit/watermelon",
+        timeout=10
+    )
 
-st.text(smoothiefruit_response)
+    st.text(smoothiefruit_response)
+
+except Exception as e:
+    st.error("API call failed")
+    st.write(e)
