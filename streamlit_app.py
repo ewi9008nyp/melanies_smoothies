@@ -1,5 +1,5 @@
+# Import python packages
 import streamlit as st
-from snowflake.snowpark.context import get_active_session
 from snowflake.snowpark.functions import col
 
 st.title(":cup_with_straw: Customize Your Smoothie! :cup_with_straw:")
@@ -11,8 +11,11 @@ name_on_order = st.text_input("Name on Smoothie:")
 if name_on_order:
     st.write("The name on your smoothie will be:", name_on_order)
 
-session = get_active_session()
+# Connect to Snowflake
+cnx = st.connection("snowflake")
+session = cnx.session()
 
+# Read fruit options
 my_dataframe = (
     session.table("SMOOTHIES.PUBLIC.FRUIT_OPTIONS")
     .select(col("FRUIT_NAME"))
@@ -39,5 +42,6 @@ if ingredients_list and name_on_order:
     if st.button("Submit Order"):
         session.sql(my_insert_stmt).collect()
         st.success("Your Smoothie is ordered!", icon="✅")
+
 elif ingredients_list and not name_on_order:
     st.warning("Please enter a name before submitting your smoothie order.")
